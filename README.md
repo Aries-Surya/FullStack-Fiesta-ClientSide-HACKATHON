@@ -1,6 +1,6 @@
 # Zoof-Fashion Merchant Application
 
-![Zoof-Fashion Logo](path-to-your-logo.png)
+![Zoof-Fashion Logo](https://i.ibb.co/Q9yVrtK/Zooflogo.png)
 
 ## About
 
