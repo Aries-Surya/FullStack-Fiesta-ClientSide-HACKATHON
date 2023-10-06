@@ -1,116 +1,108 @@
-import { Injectable, NgZone, Signal, WritableSignal, signal } from "@angular/core";
+import {Injectable, NgZone, WritableSignal, signal} from "@angular/core"
+import { User } from "./user"
+import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { AngularFirestore, AngularFirestoreDocument } from "@angular/fire/compat/firestore";
 import { Router } from "@angular/router";
-import { User } from "./user";
-import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore"
-import {AngularFireAuth} from "@angular/fire/compat/auth";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+
 
 @Injectable({
-  providedIn:"root"
+    providedIn: "root"
 })
 export class AuthService{
     userData: WritableSignal<User | null>;
 
     constructor(
-        public afs: AngularFirestore,
         public afAuth: AngularFireAuth,
+        public afs: AngularFirestore,
+        public router: Router,
         public ngZone: NgZone,
-        public router: Router
-    ){  
-        this.userData = signal(null)
-        
-        this.afAuth.authState.subscribe((user) => {
-            if (user) {
-              this.userData.set(user);
-              localStorage.setItem('user', JSON.stringify(this.userData));
-              JSON.parse(localStorage.getItem('user')!);
-            } else {
-              localStorage.setItem('user', 'null');
-              JSON.parse(localStorage.getItem('user')!);
+        public afStorage: AngularFireStorage
+    ) {
+        this.userData = signal(null);
+
+        this.afAuth.authState.subscribe(user => {
+            if(user){
+                this.SetUserData(user, false)
+                localStorage.setItem('user', JSON.stringify(user));
+
+            }else{
+                this.userData.set(null);
             }
-          });
+        })
     }
 
-    SignIn(email: string, password: string) {
-        return this.afAuth
-          .signInWithEmailAndPassword(email, password)
-          .then((result) => {
-            this.SetUserData(result.user);
-            this.afAuth.authState.subscribe((user) => {
-              if (user) {
-                this.router.navigate(['dashboard']);
-              }
-            });
-          })
-          .catch((error) => {
-            window.alert(error.message);
-          });
-      }
-      // Sign up with email/password
-      SignUp(email: string, password: string) {
-        return this.afAuth
-          .createUserWithEmailAndPassword(email, password)
-          .then((result) => {
-            /* Call the SendVerificaitonMail() function when new user sign 
-            up and returns promise */
-            this.SendVerificationMail();
-            this.SetUserData(result.user);
-          })
-          .catch((error) => {
-            window.alert(error.message);
-          });
-      }
-      // Send email verfificaiton when new user sign up
-      SendVerificationMail() {
-        return this.afAuth.currentUser
-          .then((u: any) => u.sendEmailVerification())
-          .then(() => {
-            this.router.navigate(['verify-email-address']);
-          });
-      }
-      // Reset Forggot password
-      ForgotPassword(passwordResetEmail: string) {
-        return this.afAuth
-          .sendPasswordResetEmail(passwordResetEmail)
-          .then(() => {
-            window.alert('Password reset email sent, check your inbox.');
-          })
-          .catch((error) => {
-            window.alert(error);
-          });
-      }
-      // Returns true when user is looged in and email is verified
-      get isLoggedIn(): boolean {
-        const user = JSON.parse(localStorage.getItem('user')!);
-        return user !== null && user.emailVerified !== false ? true : false;
-      }
-      /* Setting up user data when sign in with username/password, 
-      sign up with username/password and sign in with social auth  
-      provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-      SetUserData(user: any) {
-        const userRef: AngularFirestoreDocument<User> = this.afs.doc(
-          `users/${user.uid}`
-        );
+    SetUserData(user: any, isFirst: boolean): any{
         const data: User = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          emailVerified: user.emailVerified,
-        };
-
+            uid: user.uid,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            photoURL: user.photoURL,
+            displayName: user.displayName
+        }
         this.userData.set(data);
-
-        return userRef.set(data, {
-          merge: true,
-        });
-
         
-      }
-      // Sign out
-      SignOut() {
+       if(isFirst){
+        const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+        return userRef.set(data, 
+            {merge: true})
+       }
+    }
+
+    SignIn(email:string, password: string){
+        return this.afAuth.signInWithEmailAndPassword(email, password).then(result => {
+            this.SetUserData(result.user, false);
+            this.router.navigate(['dashboard']);
+            console.log("Logged In");
+        }).catch(err => window.alert(err.message));
+    }
+
+    SignUp(username: string,email: string, password: string): any{
+        if(!(username.length>=5 && username.length <= 20) || !(password.length >= 4 && password.length <= 12)){
+            window.alert('Username & Password should be of length 6 and 12');
+            return;
+        }
+        return this.afAuth.createUserWithEmailAndPassword(email, password).then(result => {
+            if(result.user){
+                result.user.updateProfile({displayName: username})
+                this.SetUserData(result.user, true);
+                this.router.navigate(['dashboard']);
+            }
+            
+        }).catch(err => window.alert(err.message));
+    }
+
+    SignOut(){
         return this.afAuth.signOut().then(() => {
-          localStorage.removeItem('user');
-          // this.router.navigate(['sign-in']);
-        });
-      }
+            localStorage.removeItem('user');
+            this.router.navigate(['']);
+        })
+    }
+
+    SendForgotPasswordLink(){
+        const data = this.userData();
+        this.afAuth.sendPasswordResetEmail(data.email as string).then(result => {
+            window.alert('Forgot Password Link has been sent check the mail box');
+        }).catch(err => window.alert(err.message))
+    }
+
+    UploadImage(){
+        const data = this.userData();
+        const file = this.file();
+        const fileRef = this.afStorage.ref(`dp/${data.uid}/${file.name}`)
+        this.afStorage.upload(`dp/${data.uid}/`, file).then(async() => {
+           fileRef.getDownloadURL().subscribe(url => {
+               if(url){
+                this.userData.set({...this.userData(), photoURL: url});
+                window.alert("Uploaded successfully");
+               }
+           })
+        })
+    }
+
+    file: WritableSignal<File | null> = signal(null);
+
+    setFile(event){
+        this.file.set(event.target.files[0])
+    }
 }
