@@ -31,8 +31,9 @@ To run the application locally, follow these steps:
 
 ## Screenshots
 
-![Screenshot 1](path-to-screenshot1.png)
-![Screenshot 2](path-to-screenshot2.png)
+![SignUp](https://i.ibb.co/gJcgxF3/Screenshot-2023-10-06-145955.png)
+![SignIn](https://i.ibb.co/QkT7FvY/Screenshot-2023-10-06-145938.png)
+![Home Page](https://i.ibb.co/RPwpQGm/Screenshot-2023-10-06-150038.png)
 
 ## Current Contributers
 
