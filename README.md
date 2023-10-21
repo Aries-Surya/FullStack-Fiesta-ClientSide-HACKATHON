@@ -1,27 +1,51 @@
-# ZoofFashion
+# Zoof-Fashion Merchant Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.5.
+![Zoof-Fashion Logo](https://i.ibb.co/Q9yVrtK/Zooflogo.png)
 
-## Development server
+## About
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The Zoof-Fashion Merchant Application was developed for the FullStack-Fiesta-ClientSide-HACKATHON event. It is a web-based platform designed to empower merchants to manage their products and interact with customers in a seamless and efficient manner.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [List of Features]
 
-## Build
+## Technologies Used
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Angular
+- Firebase (as the database)
 
-## Running unit tests
+## Getting Started
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+To run the application locally, follow these steps:
 
-## Running end-to-end tests
+1. Clone the repository: `git clone https://github.com/your-username/Zoof-Fashion.git`
+2. Navigate to the project directory: `cd Zoof-Fashion`
+3. Install dependencies: `npm install`
+4. Start the application: `ng serve`
+5. Open your browser and go to `http://localhost:4200`
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Demo
 
-## Further help
+[Link to Demo](demo-url)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Screenshots
+
+![SignUp](https://i.ibb.co/gJcgxF3/Screenshot-2023-10-06-145955.png)
+![SignIn](https://i.ibb.co/QkT7FvY/Screenshot-2023-10-06-145938.png)
+![Home Page](https://i.ibb.co/RPwpQGm/Screenshot-2023-10-06-150038.png)
+
+## Current Contributers
+
+- Kirthevasen [(Coder-Vasen)](https://github.com/Coder-Vasen)
+- Tharun [(audiofolks)](https://github.com/audiofolks)
+
+## Contributing
+
+We welcome contributions from the community. If you find any issues or have suggestions for improvements, please open a GitHub issue or submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
