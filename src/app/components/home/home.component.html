@@ -25,15 +25,18 @@
                         <div class="input-boxes">
                             <div class="input-box">
                                 <i class="bi bi-envelope-at-fill" style="font-size: 1.5rem;"></i>
-                                <input type="text" placeholder="Enter your email" required #email>
+                                <input class="login-email" type="email" placeholder="Enter your email" required #email>
                             </div>
                             <div class="input-box">
                                 <i class="bi bi-lock-fill" style="font-size: 1.5rem;"></i>
-                                <input type="password" placeholder="Enter your password" required #password>
+                                <input class="login-password" type="password" placeholder="Enter your password" required
+                                    #password>
                             </div>
-                            <div class="text"><a href="#" (click)="auth.SendForgotPasswordLink()">Forgot password?</a></div>
+                            <div class="text"><a href="#" (click)="auth.SendForgotPasswordLink()">Forgot password?</a>
+                            </div>
                             <div class="button input-box">
-                                <input type="button" value="Sign In" (click)="auth.SignIn(email.value, password.value)">
+                                <input class="login-button" type="button" value="Sign In"
+                                    (click)="auth.SignIn(email.value, password.value)">
                             </div>
                             <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label>
                             </div>
@@ -46,23 +49,26 @@
                         <div class="input-boxes">
                             <div class="input-box">
                                 <i class="bi bi-person-fill" style="font-size: 1.5rem;"></i>
-                                <input type="text" placeholder="Enter your name" required #username>
+                                <input class="signup-username" type="text" placeholder="Enter your name" required
+                                    #username>
                             </div>
                             <div class="input-box">
                                 <i class="bi bi-envelope-at-fill" style="font-size: 1.5rem;"></i>
-                                <input type="text" placeholder="Enter your email" required #upemail>
+                                <input class="signup-email" type="email" placeholder="Enter your email" required
+                                    #upemail>
                             </div>
                             <div class="input-box">
                                 <i class="bi bi-lock-fill" style="font-size: 1.5rem;"></i>
-                                <input type="password" placeholder="Enter your password" required #uppassword>
+                                <input class="signup-password" type="password" placeholder="Enter your password"
+                                    required #uppassword>
                             </div>
                             <div class="button input-box">
-                                <input type="button" value="Sign Up"
+                                <input class="signup-button" type="button" value="Sign Up"
                                     (click)="auth.SignUp(username.value, upemail.value, uppassword.value)">
                             </div>
                             <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label>
                             </div>
-                        
+
                         </div>
                     </form>
                 </div>

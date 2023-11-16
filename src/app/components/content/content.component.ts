@@ -204,7 +204,7 @@ export class ContentComponent implements OnInit {
     })  
   } 
 
-  constructor(public auth: AuthService, public route: ActivatedRoute) {}
+  constructor(public route: ActivatedRoute) {}
 
 
   Starfill(data: Card): number[]{
